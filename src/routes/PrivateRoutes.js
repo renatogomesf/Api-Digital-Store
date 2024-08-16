@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import UserRoutes from './UserRoutes.js';
+import CategoryRoutes from "./CategoryRoutes.js";
 
 
 
@@ -21,6 +22,7 @@ PrivateRoutes.use((request, respnse, next)=>{
 
 
 PrivateRoutes.use(UserRoutes)
+PrivateRoutes.use(CategoryRoutes)
 
 
 

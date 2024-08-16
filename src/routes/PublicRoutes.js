@@ -11,7 +11,7 @@ import AuthenticateController from "../controllers/AuthenticateController.js";
 
 const PublicRoutes = express.Router()
 
-PublicRoutes.post('/v1/user', UserMiddleware.verifyCreate, UserController.create)
+PublicRoutes.post('/cadastro', UserMiddleware.verifyCreate, UserController.create)
 
 PublicRoutes.post('/login', async (request, response)=>{
     const body = request.body
