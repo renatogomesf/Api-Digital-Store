@@ -2,29 +2,51 @@ import UserModel from "../models/UserModel.js"
 
 class UserController {
     async findAll(request, response){
-        const users = await UserModel.findAll()
+        const users = await UserModel.findAll({
+            attributes: ["id", "firstname", "surname", "email"]
+        })
 
-        return response.status(200).send(users)
+        if(users){
+            return response.status(200).send(users)
+        }else{
+            return response.status(404).send({
+                message: "Usuários não encontrado."
+            })
+        }
     }
 
 
     async findById(request, response){
         const id = request.params.id
 
-        const user = await UserModel.findByPk(id)
+        const user = await UserModel.findByPk(id, {
+            attributes: ["id", "firstname", "surname", "email"]
+        })
 
-        return response.status(200).send(user)
+        if(user){
+            return response.status(200).send(user)
+        }else{
+            return response.status(404).send({
+                message: "Usuário não encontrado."
+            })
+        }
     }
 
 
     async create(request, response){
-        const body = request.body
+        const {firstname,surname,email,password} = request.body
+
+        const body = {
+            firstname,
+            surname,
+            email,
+            password
+        } 
 
         await UserModel.create(body)
 
         return response.status(201).send({
-            message: "Usuário criado com sucesso",
-            user: body
+            message: "Usuário criado com sucesso"
         })
     }
 
@@ -37,10 +59,7 @@ class UserController {
             where: {id}
         })
 
-        return response.status(200).send({
-            message: "Usuário atualizado com sucesso",
-            user: body
-        })
+        return response.status(204).send()
     }
 
 
@@ -51,9 +70,7 @@ class UserController {
             where: {id}
         })
 
-        return response.status(200).send({
-            message: "Usuário deletado com sucesso"
-        })
+        return response.status(204).send()
     }
 }
 
