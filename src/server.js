@@ -1,12 +1,14 @@
 import express from "express";
 import env from "dotenv"
 
-import UserRoutes from "./routes/UserRoutes.js";
+import PublicRoutes from "./routes/PublicRoutes.js";
+import PrivateRoutes from "./routes/PrivateRoutes.js";
 
 env.config()
 const app = express()
 app.use(express.json())
-app.use(UserRoutes)
+app.use(PublicRoutes)
+app.use(PrivateRoutes)
 
 
 const PORT = process.env.PORT_API

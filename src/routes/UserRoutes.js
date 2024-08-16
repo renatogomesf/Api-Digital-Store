@@ -9,7 +9,7 @@ UserRoutes.get('/v1/user', UserController.findAll)
 
 UserRoutes.get('/v1/user/:id', UserController.findById)
 
-UserRoutes.post('/v1/user', UserMiddleware.verifyCreate, UserController.create)
+// UserRoutes.post('/v1/user', UserMiddleware.verifyCreate, UserController.create)
 
 UserRoutes.put('/v1/user/:id', UserMiddleware.verifyUpdate, UserController.update)
 
