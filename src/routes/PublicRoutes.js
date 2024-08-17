@@ -11,8 +11,6 @@ import AuthenticateController from "../controllers/AuthenticateController.js";
 
 const PublicRoutes = express.Router()
 
-PublicRoutes.post('/cadastro', UserMiddleware.verifyCreate, UserController.create)
-
 PublicRoutes.post('/login', async (request, response)=>{
     const body = request.body
 
@@ -41,7 +39,6 @@ PublicRoutes.post('/login', async (request, response)=>{
     }else{
         response.send({message:'login ou senha incorreto'})
     }
-
 })
 
 

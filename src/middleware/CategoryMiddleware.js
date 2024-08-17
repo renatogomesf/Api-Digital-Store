@@ -1,54 +1,122 @@
 import CategoryModel from "../models/CategoryModel.js"
 
-class CategoryMiddleware {
-    verifyCreate(request, response, next){
-        const {name,slug} = request.body
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv'
+dotenv.config()
 
-        if(name && slug){
+
+class CategoryMiddleware {
+
+    verifyFindAll(request, response, next){
+        const {limit,page,fields,use_in_menu} = request.query
+
+        if(limit && page && fields && use_in_menu){
             next()
         }else{
             return response.status(400).send({
-                message: "Preencha todos os campos para realizar o cadastro."
+                message: "Envie todos os campos para realizar busca."
             })
         }
     }
 
 
-    // async verifyUpdate(request, response, next){
-    //     const id = request.params.id
-    //     const {firstname,surname,email} = request.body
 
-    //     const user = await UserModel.findByPk(id)
+    verifyCreate(request, response, next){
 
-    //     if(user){
-    //         if(firstname && surname && email){
-    //             next()
-    //         }else{
-    //             return response.status(400).send({
-    //                 message: "Preencha todos os campos para atualizar."
-    //             })
-    //         }
-    //     }else{
-    //         return response.status(404).send({
-    //             message: `Usuário com id ${id} não encontrado.`
-    //         })
-    //     }
-    // }
+        const authorization = request.headers.authorization
+
+        let autorizado = false
+
+        try{
+            jwt.verify(authorization, process.env.KEY)
+            autorizado = true
+        }catch(erro){
+            return response.status(401).send({message:"Acesso não autorizado. Faça login para realizar a ação", erro})
+        }
 
 
-    // async verifyDelete(request, response, next){
-    //     const id = request.params.id
 
-    //     const user = await UserModel.findByPk(id)
+        if(autorizado){
+            const {name,slug} = request.body
+    
+            if(name && slug){
+                next()
+            }else{
+                return response.status(400).send({
+                    message: "Preencha todos os campos para realizar o cadastro."
+                })
+            }
+        }
+    }
 
-    //     if(user){
-    //         next()
-    //     }else{
-    //         return response.status(404).send({
-    //             message: `Usuário com id ${id} não encontrado.`
-    //         })
-    //     }
-    // }
+
+    async verifyUpdate(request, response, next){
+
+        const authorization = request.headers.authorization
+
+        let autorizado = false
+
+        try{
+            jwt.verify(authorization, process.env.KEY)
+            autorizado = true
+        }catch(erro){
+            return response.status(401).send({message:"Acesso não autorizado. Faça login para realizar a ação", erro})
+        }
+
+
+
+        if(autorizado){
+            const id = request.params.id
+            const {name,slug,use_in_menu} = request.body
+    
+            const category = await CategoryModel.findByPk(id)
+    
+            if(category){
+                if(name && slug && use_in_menu){
+                    next()
+                }else{
+                    return response.status(400).send({
+                        message: "Preencha todos os campos para atualizar."
+                    })
+                }
+            }else{
+                return response.status(404).send({
+                    message: `Categoria com id ${id} não encontrada.`
+                })
+            }
+        }
+    }
+
+
+    async verifyDelete(request, response, next){
+
+        const authorization = request.headers.authorization
+
+        let autorizado = false
+
+        try{
+            jwt.verify(authorization, process.env.KEY)
+            autorizado = true
+        }catch(erro){
+            return response.status(401).send({message:"Acesso não autorizado. Faça login para realizar a ação", erro})
+        }
+
+
+
+        if(autorizado){
+            const id = request.params.id
+    
+            const category = await CategoryModel.findByPk(id)
+    
+            if(category){
+                next()
+            }else{
+                return response.status(404).send({
+                    message: `Categoria com id ${id} não encontrada.`
+                })
+            }
+        }
+    }
 }
 
 export default new CategoryMiddleware

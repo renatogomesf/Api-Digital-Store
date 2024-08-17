@@ -32,28 +32,34 @@ class CategoryController {
             }
         })
 
+        if(categorys){
+            return response.status(200).send({
+                data: categoriaLimitada,
+                total: contadorLimit,
+                limit: limit,
+                page: (limit == "-1"? "" : page)
+            })
+        }else{
+            return response.status(404).send({
+                message: "Categorias não encontrada."
+            })
+        }
 
-        return response.status(200).send({
-            data: categoriaLimitada,
-            total: contadorLimit,
-            limit: limit,
-            page: (limit == "-1"? "" : page)
-        })
     }
 
 
     async findById(request, response){
         const id = request.params.id
 
-        const user = await CategoryModel.findByPk(id, {
-            attributes: ["id", "firstname", "surname", "email"]
+        const category = await CategoryModel.findByPk(id, {
+            attributes: ["id", "name", "slug", "use_in_menu"]
         })
 
-        if(user){
-            return response.status(200).send(user)
+        if(category){
+            return response.status(200).send(category)
         }else{
             return response.status(404).send({
-                message: "Usuário não encontrado."
+                message: "Categoria não encontrada."
             })
         }
     }
