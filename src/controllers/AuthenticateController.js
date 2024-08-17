@@ -10,8 +10,6 @@ class AuthenticateController {
             }
         })
 
-        console.log(dados)
-
         if(dados.length){
             return dados
         }else{
