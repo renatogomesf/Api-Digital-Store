@@ -11,9 +11,9 @@ ProductRoutes.get('/v1/product/:id', ProductController.findById)
 
 ProductRoutes.post('/v1/product', ProductMiddleware.verifyCreate, ProductController.create)
 
-ProductRoutes.put('/v1/product/:id', ProductController.update)
+ProductRoutes.put('/v1/product/:id', ProductMiddleware.verifyUpdate, ProductController.update)
 
-ProductRoutes.delete('/v1/product/:id', ProductController.delete)
+ProductRoutes.delete('/v1/product/:id', ProductMiddleware.verifyDelete, ProductController.delete)
 
 
 export default ProductRoutes

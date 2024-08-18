@@ -11,7 +11,8 @@ Imagens.init(
             references: {
                 model: ProductModel,
                 key: "id"
-            }
+            },
+            onDelete: 'CASCADE'
         },
 
         enable: {

@@ -4,6 +4,8 @@ import CategoryModel from '../models/CategoryModel.js'
 import ImageProductModel from '../models/ImageProductModel.js'
 import OptionProductModel from './../models/OptionProductModel.js';
 
+import { Op, Sequelize } from "sequelize";
+
 class ProductController {
 
     constructor () {
@@ -16,6 +18,7 @@ class ProductController {
     }
 
 
+
     async findAll(request, response){
         const {limit,page,fields,match,category_ids,price_range,option} = request.query
 
@@ -25,55 +28,38 @@ class ProductController {
 
         const price_rangeTratado = price_range.split('-')
 
-        const optionTratado = option.split(',')
-
         const products = await ProductModel.findAll({
             attributes: fieldsTratado,
             include: [
                 {
                     model: CategoryModel,
-                    attributes: ["id"]
+                    attributes: ["id"],
+                    where: {
+                        id: {
+                            [Op.or]: category_idsTratado
+                        }
+                    }
                 },
                 {
                     model: ImageProductModel,
-                    attributes: ["id", "path"]
+                    attributes: ["id", "enable", "path"]
                 },
                 {
-                    model: OptionProductModel
+                    model: OptionProductModel,
+                    attributes: ["id","title","shape","radius","type","values"]
                 }
-            ]
-        })
+            ],
 
+            where: {
+                price: {
+                    [Op.between]: price_rangeTratado
+                },
 
-
-        const produtoFiltrado = products.map(async(produto)=>{
-            let infoProduto = {
-                name: produto.name,
-                description: produto.description,
-                price: produto.price,
-                categoria: '',
-                opicao: ''
+                name: {
+                    [Op.substring]: match
+                }
             }
-
-            // let categoriaProduto = ''
-
-            // let opicaoProduto = ''
-
-
-            produto.Categoria.map((categoria)=>{
-                infoProduto.categoria += `${categoria.id},`
-            })
-
-            produto.Opicoes.map((opicoes)=>{
-                infoProduto.opicao += `${opicoes.values}-`
-            })
-
-            return infoProduto
         })
-
-        console.log(produtoFiltrado)
-
-        
 
         let contadorLimit = 0
         const categoriaLimitada = []
@@ -103,12 +89,42 @@ class ProductController {
     }
 
 
-    findById(request, response){}
+
+    async findById(request, response){
+        const id = request.params.id
+
+        const produto = await ProductModel.findByPk(id, {
+            attributes:["id","enable","name","slug","stock","description","price","price_with_discount"],
+            include: [
+                {
+                    model: CategoryModel,
+                    attributes: ["id"]
+                },
+                {
+                    model: ImageProductModel,
+                    attributes: ["id", "enable", "path"]
+                },
+                {
+                    model: OptionProductModel,
+                    attributes: ["id","title","shape","radius","type","values"]
+                }
+            ]
+        })
+
+        if(produto){
+            return response.status(200).send(produto)
+        }else{
+            return response.status(404).send({
+                message: "Produto não encontrado."
+            })
+        }
+    }
+
 
 
     async create(request, response){
 
-        const {category_ids, images, options, ...body} = request.body
+        const {Categoria, Imagens, Opicoes, ...body} = request.body
 
         let product = await ProductModel.create(body, {
             include: {
@@ -117,10 +133,9 @@ class ProductController {
             }
         })
 
-        product.setCategoria(category_ids)
+        product.setCategoria(Categoria)
 
-
-        images.map(async(item)=>{
+        Imagens.map(async(item)=>{
             await ImageProductModel.create({
                 product_id: product.id,
                 enable: item.enable,
@@ -128,8 +143,7 @@ class ProductController {
             })
         })
         
-
-        options.map(async(item)=>{
+        Opicoes.map(async(item)=>{
             await OptionProductModel.create({
                 product_id: product.id,
                 title: item.title,
@@ -146,10 +160,59 @@ class ProductController {
     }
 
 
-    update(request, response){}
+
+    async update(request, response){
+        const id = request.params.id
+        const body = request.body
+
+        await ProductModel.update(body, {
+            where: {id}
+        })
+
+        body.Imagens.map(async(item)=>{
+            await ImageProductModel.update(item, {
+                where: {id: item.id}
+            })
+        })
+        
+        body.Opicoes.map(async(item)=>{
+            await OptionProductModel.update(item, {
+                where: {id: item.id}
+            })
+        })
+        
+        return response.status(204).send()
+    }
 
 
-    delete(request, response){}
+
+    async delete(request, response){
+        const id = request.params.id
+
+        await ProductCategoryModel.destroy({
+            where: {
+               product_id: id
+            }
+        })
+
+        await ImageProductModel.destroy({
+            where: {
+               product_id: id
+            }
+        })
+
+        await OptionProductModel.destroy({
+            where: {
+               product_id: id
+            }
+        })
+
+        await ProductModel.destroy({
+            where: {id}
+        })
+
+        return response.status(204).send()
+    }
 }
 
 export default new ProductController

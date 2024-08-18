@@ -13,7 +13,8 @@ ProductCategoryModel.init(
             references: {
                 model: ProductModel,
                 key: "id"
-            }
+            },
+            onDelete: 'CASCADE'
         },
 
         category_id: {
@@ -22,7 +23,9 @@ ProductCategoryModel.init(
             references: {
                 model: CategoryModel,
                 key: "id"
-            }
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         }
     },
     {

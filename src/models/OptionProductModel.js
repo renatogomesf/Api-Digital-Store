@@ -12,7 +12,8 @@ Opicoes.init(
             references: {
                 model: ProductModel,
                 key: "id"
-            }
+            },
+            onDelete: 'CASCADE'
         },
 
         title: {

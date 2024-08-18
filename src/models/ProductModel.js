@@ -6,17 +6,20 @@ class ProductModel extends Model {
     static associate({CategoryModel, ProductCategoryModel, ImageProductModel, OptionProductModel}){
         
         ProductModel.hasMany(ImageProductModel, {
-            foreignKey: "product_id"
+            foreignKey: "product_id",
+            onDelete: 'CASCADE'
         })
         
         ProductModel.hasMany(OptionProductModel, {
-            foreignKey: "product_id"
+            foreignKey: "product_id",
+            onDelete: 'CASCADE'
         })
         
         ProductModel.belongsToMany(CategoryModel, {
             through: ProductCategoryModel,
             foreignKey: "product_id",
-            otherKey: "category_id"
+            otherKey: "category_id",
+            onDelete: 'CASCADE'
         })
     }
 }
