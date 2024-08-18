@@ -2,9 +2,9 @@ import { DataTypes, Model } from "sequelize";
 import connection from '../services/connection.js';
 import ProductModel from "./ProductModel.js";
 
-class ImageProductModel extends Model {}
+class Imagens extends Model {}
 
-ImageProductModel.init(
+Imagens.init(
     {
         product_id: {
             type: DataTypes.INTEGER,
@@ -31,4 +31,4 @@ ImageProductModel.init(
     }
 )
 
-export default ImageProductModel
+export default Imagens

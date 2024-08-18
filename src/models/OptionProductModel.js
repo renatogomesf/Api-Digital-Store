@@ -2,9 +2,9 @@ import { DataTypes, Model } from "sequelize";
 import connection from "../services/connection.js";
 import ProductModel from "./ProductModel.js";
 
-class OptionProductModel extends Model {}
+class Opicoes extends Model {}
 
-OptionProductModel.init(
+Opicoes.init(
     {
         product_id: {
             type: DataTypes.INTEGER,
@@ -45,4 +45,4 @@ OptionProductModel.init(
     }
 )
 
-export default OptionProductModel
+export default Opicoes

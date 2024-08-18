@@ -1,7 +1,25 @@
 import { DataTypes, Model } from "sequelize";
 import connection from '../services/connection.js';
 
-class ProductModel extends Model {}
+
+class ProductModel extends Model {
+    static associate({CategoryModel, ProductCategoryModel, ImageProductModel, OptionProductModel}){
+        
+        ProductModel.hasMany(ImageProductModel, {
+            foreignKey: "product_id"
+        })
+        
+        ProductModel.hasMany(OptionProductModel, {
+            foreignKey: "product_id"
+        })
+        
+        ProductModel.belongsToMany(CategoryModel, {
+            through: ProductCategoryModel,
+            foreignKey: "product_id",
+            otherKey: "category_id"
+        })
+    }
+}
 
 ProductModel.init(
     {

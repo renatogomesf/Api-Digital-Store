@@ -1,9 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import connection from "../services/connection.js";
 
-class CategoryModel extends Model {}
+class Categoria extends Model {}
 
-CategoryModel.init(
+Categoria.init(
     {
         name: {
             type: DataTypes.STRING(45),
@@ -27,4 +27,4 @@ CategoryModel.init(
     }
 )
 
-export default CategoryModel
+export default Categoria
