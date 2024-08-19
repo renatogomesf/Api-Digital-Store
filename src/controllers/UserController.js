@@ -50,7 +50,7 @@ class UserController {
         await UserModel.create(body)
 
         return response.status(201).send({
-            message: "Usuário cadastrado com sucesso"
+            message: "Usuário cadastrado com sucesso."
         })
     }
 

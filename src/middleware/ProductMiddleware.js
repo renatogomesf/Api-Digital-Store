@@ -79,7 +79,7 @@ class ProductMiddleware {
                 }
             }else{
                 return response.status(404).send({
-                    message: `Categoria com id ${id} não encontrada.`
+                    message: `Produto com id ${id} não encontrado.`
                 })
             }
         }

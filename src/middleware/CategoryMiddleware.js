@@ -31,7 +31,7 @@ class CategoryMiddleware {
             jwt.verify(authorization, process.env.KEY)
             autorizado = true
         }catch(erro){
-            return response.status(401).send({message:"Acesso não autorizado. Faça login para realizar a ação", erro})
+            return response.status(401).send({message:"Acesso não autorizado. Faça login para realizar a ação.", erro})
         }
 
 

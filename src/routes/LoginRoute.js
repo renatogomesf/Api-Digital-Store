@@ -34,10 +34,10 @@ LoginRoute.post('/login', async (request, response)=>{
                 token: token
             })
         }else{
-            response.status(401).send({message:'Login ou Senha incorreto'})
+            response.status(401).send({message:'Login ou Senha incorreto.'})
         }
     }else{
-        response.status(400).send({message:'Preencha todos os campos para efetuar login'})
+        response.status(400).send({message:'Preencha todos os campos para efetuar login.'})
     }
 })
 

@@ -15,7 +15,7 @@ class UserMiddleware {
             if(password === confirmPassword){
                 next()
             }else{
-                return response.status(400).send({
+                return response.status(401).send({
                     message: "Senhas não correspondem."
                 })
             }
@@ -37,7 +37,7 @@ class UserMiddleware {
             jwt.verify(authorization, process.env.KEY)
             autorizado = true
         }catch(erro){
-            return response.status(401).send({message:"Acesso não autorizado. Faça login para realizar a ação", erro})
+            return response.status(401).send({message:"Acesso não autorizado. Faça login para realizar a ação.", erro})
         }
 
 

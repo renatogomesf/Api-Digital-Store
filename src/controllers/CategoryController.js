@@ -77,7 +77,7 @@ class CategoryController {
         await CategoryModel.create(body)
 
         return response.status(201).send({
-            message: "Categoria cadastrada com sucesso"
+            message: "Categoria cadastrada com sucesso."
         })
     }
 
