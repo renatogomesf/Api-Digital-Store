@@ -23,12 +23,12 @@ Para rodar essa api vamos precisar fazer algumas configurações e criações an
 # Rodando a api e testando rotas
 ### Para rodar a api basta digitar `npm start` no terminal
 
-Antes de ralizar o CRUD completo de todas as rotas, é preciso cadastrar um usuário e fazer login através da rota "/login" para gerar um token e, com esse token, ter acesso a toda api. Então bora fazer isso!
+Antes de ralizar o CRUD completo de todas as rotas, é preciso cadastrar um usuário e fazer login para gerar um token e, com esse token, ter acesso a toda api. Então vamos fazer isso!
 
 <details>
   <summary><strong> CADASTRO de Usuário </strong></summary><br>
  
- - ![Static Badge](https://img.shields.io/badge/POST-3bd339) /v1/user
+ - ![Static Badge](https://img.shields.io/badge/POST-36a01e)   /v1/user
 
 **Request body**
 ```json
@@ -63,13 +63,13 @@ Antes de ralizar o CRUD completo de todas as rotas, é preciso cadastrar um usu�
    "message": "Senhas não correspondem."
  }
 ```
-
 </details>
+
 
 <details>
   <summary><strong> LOGIN para gerar token </strong></summary><br>
  
- - ![Static Badge](https://img.shields.io/badge/POST-3bd339) /login
+ - ![Static Badge](https://img.shields.io/badge/POST-3bd339)   /login
 
 **Request body**
 ```json
@@ -102,29 +102,374 @@ Antes de ralizar o CRUD completo de todas as rotas, é preciso cadastrar um usu�
    "message": "Login ou Senha incorreto."
  }
 ```
-
 </details>
+
+Após o cadastro e de posse do token gerado no login, acesse os headers de POST, PUT e DELETE e adicione a chave `authorization` com seu valor sendo o token gerado. Com isso, você terá acesso às rotas da API. As rotas GET não precisam de token.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## CRUD de Usuários
 
 <details>
-  <summary><strong>Requisito 01 - Criar a tabela de usuários</strong></summary><br>
+  <summary><strong> GET - Listar todos os usuários </strong></summary><br>
 
-O objetivo deste requisito é criar a tabela de usuários no banco de dados utilizando o Sequelize ORM. A tabela deve conter as colunas a seguir:
+* ![Static Badge](https://img.shields.io/badge/GET-883aaf)   /v1/user
 
-- **id**: Coluna do tipo INTEGER que representa a chave primária da tabela. Seu valor deve ser incrementado automaticamente pelo banco de dados
-- **firstname**: Coluna do tipo STRING e de preenchimento obrigatório que armazena o primeiro nome do usuário
-- **surname**: Coluna do tipo STRING e de preenchimento obrigatório que armazena o sobrenome do usuário.
-- **email**: Coluna do tipo STRING e de preenchimento obrigatório que armazena o endereço de email do usuário
-- **password**: Coluna do tipo STRING e de preenchimento obrigatório que armazena a senha do usuário. O valor a ser armazenado deve ser o hash da senha gerado pelo pacote bcrypt.
+**Responses**
+* 200 - Ok
+```json
+[
+   {
+      "id": 1,
+      "firstname": "NOME",
+      "surname": "SOBRENOME",
+      "email": "NOME@gmail.com"
+   },
+   {
+      "id": 2,
+      "firstname": "NOME 02",
+      "surname": "SOBRENOME 02",
+      "email": "NOME02@gmail.com"
+   }
+]
+```
 
-> Use a configuração `timestamps: true` do sequelize para gerar as colunas **created_at** e **updated_at**
-
+* 404 - Not Found
+```json
+{
+   "message": "Usuários não encontrado."
+}
+```
 </details>
 
 
+<details>
+  <summary><strong> GET ID - Listar usuário por ID </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/GET-883aaf)   /v1/user/:id
+
+**Responses**
+* 200 - Ok
+```json
+{
+   "id": 1,
+   "firstname": "NOME",
+   "surname": "SOBRENOME",
+   "email": "NOME@gmail.com"
+}
+```
+
+* 404 - Not Found
+```json
+{
+   "message": "Usuário não encontrado."
+}
+```
+</details>
 
 
+<details>
+  <summary><strong> POST - Cadastrar usuário </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/POST-36a01e)   /v1/user
+
+> Esta rota é a mesma do cadastro feito anterior mente e não requer um token de autorização.
+
+**Request body**
+```json
+ {
+   "firstname": "NOME",
+   "surname": "SOBRENOME",
+   "email": "NOME@gmail.com",
+   "password": "777",
+   "confirmPassword": "777"
+ }
+```
+
+**Responses**
+* 201 - Creatad
+```json
+ {
+   "message": "Usuário cadastrado com sucesso."
+ }
+```
+
+* 400 - Bad Request
+```json
+ {
+   "message": "Preencha todos os campos para realizar o cadastro."
+ }
+```
+
+* 401 - Unauthorized
+```json
+ {
+   "message": "Senhas não correspondem."
+ }
+```
+</details>
+
+
+<details>
+  <summary><strong> PUT - Atualizar um usuário por ID </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/PUT-bf8226)   /v1/user/:id
+
+**Request body**
+```json
+ {
+   "firstname": "NOME ATUALIZADO",
+   "surname": "SOBRENOME ATUALIZADO",
+   "email": "NOME@gmail.com"
+ }
+```
+
+**Responses**
+* 204 - No Content `Sem response`
+
+* 400 - Bad Request
+```json
+ {
+   "message": "Preencha todos os campos para atualizar."
+ }
+```
+
+* 401 - Unauthorized
+```json
+ {
+   "message": "Acesso não autorizado. Faça login para realizar a ação."
+ }
+```
+
+* 404 - Not Found
+```json
+ {
+   "message": "Usuário com id ${id} não encontrado."
+ }
+```
+</details>
+
+
+<details>
+  <summary><strong> DELETE - Deletar um usuário por ID </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/DELETE-dd2525)   /v1/user/:id
+
+**Responses**
+* 204 - No Content `Sem response`
+
+* 401 - Unauthorized
+```json
+ {
+   "message": "Acesso não autorizado. Faça login para realizar a ação."
+ }
+```
+
+* 404 - Not Found
+```json
+ {
+   "message": "Usuário com id ${id} não encontrado."
+ }
+```
+</details>
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## CRUD de categorias
+
+<details>
+  <summary><strong> GET - Listar todas as categorias </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/GET-883aaf)   /v1/category/search?limit=-1&page=1&fields=id,name,slug,use_in_menu&use_in_menu=true
+
+**Query params**
+  - `limit=-1`
+    - Query string para definir o limit de itens por página
+    - Use `-1` como valor para buscar todos os itens
+    - Padrão: 12
+  - `page=1`
+    - Query string para definir a paginação dos dados retornados
+    - Quando `limit` receber `-1` a opção de `page` não tem nenhum efeito no resultado da busca
+    - Padrão: 1
+  - `fields=name,slug`
+    - Query string para limitar quais campos serão retornados
+  - `use_in_menu=true`
+    - Query string para filtrar apenas as categorias que podem aparecer no menu
+
+**Responses**
+* 200 - Ok
+```json
+{
+"data": [
+      {
+         "id": 1,
+         "name": "Shoes",
+         "slug": "shoes",
+         "use_in_menu": 1
+      },
+      {
+         "id": 2,
+         "name": "Offers",
+         "slug": "offers",
+         "use_in_menu": 1
+      },
+      {
+         "id": 3,
+         "name": "Black Friday",
+         "slug": "black-friday",
+         "use_in_menu": 1
+      }
+   ],
+   "total": 3,
+   "limit": "-1",
+   "page": ""
+}
+```
+
+* 400 - Bad Request
+```json
+{
+   "message": "Envie todos os campos para realizar busca."
+}
+```
+
+* 404 - Not Found
+```json
+{
+   "message": "Categorias não encontrada."
+}
+```
+</details>
+
+
+<details>
+  <summary><strong> GET ID - Listar categoria por ID </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/GET-883aaf)   /v1/category/:id
+
+**Responses**
+* 200 - Ok
+```json
+{
+   "id": 1,
+   "name": "Shoes",
+   "slug": "shoes",
+   "use_in_menu": 1
+}
+```
+
+* 404 - Not Found
+```json
+{
+   "message": "Categoria não encontrada."
+}
+```
+</details>
+
+
+<details>
+  <summary><strong> POST - Cadastrar usuário </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/POST-36a01e)   /v1/user
+
+> Esta rota é a mesma do cadastro feito anterior mente e não requer um token de autorização.
+
+**Request body**
+```json
+ {
+   "firstname": "NOME",
+   "surname": "SOBRENOME",
+   "email": "NOME@gmail.com",
+   "password": "777",
+   "confirmPassword": "777"
+ }
+```
+
+**Responses**
+* 201 - Creatad
+```json
+ {
+   "message": "Usuário cadastrado com sucesso."
+ }
+```
+
+* 400 - Bad Request
+```json
+ {
+   "message": "Preencha todos os campos para realizar o cadastro."
+ }
+```
+
+* 401 - Unauthorized
+```json
+ {
+   "message": "Senhas não correspondem."
+ }
+```
+</details>
+
+
+<details>
+  <summary><strong> PUT - Atualizar um usuário por ID </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/PUT-bf8226)   /v1/user/:id
+
+**Request body**
+```json
+ {
+   "firstname": "NOME ATUALIZADO",
+   "surname": "SOBRENOME ATUALIZADO",
+   "email": "NOME@gmail.com"
+ }
+```
+
+**Responses**
+* 204 - No Content `Sem response`
+
+* 400 - Bad Request
+```json
+ {
+   "message": "Preencha todos os campos para atualizar."
+ }
+```
+
+* 401 - Unauthorized
+```json
+ {
+   "message": "Acesso não autorizado. Faça login para realizar a ação."
+ }
+```
+
+* 404 - Not Found
+```json
+ {
+   "message": "Usuário com id ${id} não encontrado."
+ }
+```
+</details>
+
+
+<details>
+  <summary><strong> DELETE - Deletar um usuário por ID </strong></summary><br>
+
+* ![Static Badge](https://img.shields.io/badge/DELETE-dd2525)   /v1/user/:id
+
+**Responses**
+* 204 - No Content `Sem response`
+
+* 401 - Unauthorized
+```json
+ {
+   "message": "Acesso não autorizado. Faça login para realizar a ação."
+ }
+```
+
+* 404 - Not Found
+```json
+ {
+   "message": "Usuário com id ${id} não encontrado."
+ }
+```
+</details>
 
 
 
