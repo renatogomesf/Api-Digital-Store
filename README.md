@@ -3,7 +3,7 @@
 [![Static Badge](https://img.shields.io/badge/Licen%C3%A7a-MIT-green)](https://github.com/renatogomesf/Api-Digital-Store/blob/main/LICENSE)
 
 ### Sobre o projeto
-A  Api-Digital-Store foi desenvolvida durante o curso fullstack da [Geração Tech](https://geracaotech.iel-ce.org.br/). O projeto consiste em uma API (Application Programming Interface), com o intuito de fornecer rotas para CRUDs diversos e garantir a segurança e persistência de dados de um e-commerce.
+A  Api-Digital-Store foi desenvolvida durante o curso fullstack da [Geração Tech](https://geracaotech.iel-ce.org.br/). O projeto consiste em uma API (Application Programming Interface), com o intuito de fornecer rotas para CRUDs (Create, Read, Update e Delete) diversos e garantir a funcionalidade, segurança e persistência de dados de um e-commerce.
 
 ### Tecnologias usadas no projeto
 - **Node.js:** para fornecer a possibilidade de executar JS em um servidor
