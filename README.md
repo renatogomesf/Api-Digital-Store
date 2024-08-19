@@ -1,6 +1,21 @@
 # Bem-vindo(a) à Api-Digital-Store :)
 
-Para rodar essa api vamos precisar fazer algumas configurações e criações antes.
+[![Static Badge](https://img.shields.io/badge/Licen%C3%A7a-MIT-green)](https://github.com/renatogomesf/Api-Digital-Store/blob/main/LICENSE)
+
+### Sobre o projeto
+A  Api-Digital-Store foi desenvolvida durante o curso fullstack da [Geração Tech](https://geracaotech.iel-ce.org.br/). O projeto consiste em uma API (Application Programming Interface), com o intuito de fornecer rotas para CRUDs diversos e garantir a segurança e persistência de dados de um e-commerce.
+
+### Tecnologias usadas no projeto
+- **Node.js:** para fornecer a possibilidade de executar JS em um servidor
+- **Express.js:** para criar rotas de api
+- **Dotenv:** para criar configurações com mais facilidade e segurança
+- **Nodemon:** para ter mais produtividade no ambiente de desenvolvimento
+- **MySQL:** para persistência de dados
+- **Sequelize:** para ter mais produtividade ao lidar com o banco de dados 
+- **JWT:** para adicionar segurança e limitar o acesso nas rotas de API
+- **Crypto-js:** para criptografar as senhas na hora de cadastrar um usuário e trazer segurança
+
+## Para rodar essa api vamos precisar fazer algumas configurações e criações antes. Veja abaixo.
 
 ### Clonando o repositório
 1) Primeiramente clone/faça o download deste reposítorio para sua máquina;
@@ -818,6 +833,8 @@ Para rodar essa api vamos precisar fazer algumas configurações e criações an
 
 * ![Static Badge](https://img.shields.io/badge/PUT-bf8226)   /v1/product/:id
 
+> O envio dos IDs das imagens e opções são necessários!
+
 **Request body**
 ```json
 {
@@ -914,3 +931,8 @@ Para rodar essa api vamos precisar fazer algumas configurações e criações an
 </details>
 
 
+## Autor
+
+Renato Gomes Ferreira
+
+https://www.linkedin.com/in/renato-gomes-22b759236/
